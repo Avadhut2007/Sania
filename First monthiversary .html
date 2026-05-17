@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>One Month — Happy Anniversary, My Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cream: #fdf6ef;
+            --blush: #e8c4b2;
+            --rose: #c4706a;
+            --deep: #7a3636;
+            --wine: #3d1a1a;
+            --gold: #c9a96e;
+            --gold-light: #f0d9b0;
+            --text: #2c1810;
+            --text-light: #6b4040;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--wine);
+            color: var(--cream);
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── CUSTOM CURSOR ── */
+        #cursor {
+            position: fixed;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--gold);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        #cursor.clicked {
+            width: 30px;
+            height: 30px;
+            background: rgba(201, 169, 110, 0.2);
+        }
+
+        /* ── CANVAS (stars) ── */
+        #stars-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── PETALS ── */
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            animation: petalFall linear infinite;
+        }
+
+        @keyframes petalFall {
+            0% {
+                transform: translateY(-60px) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.7;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(720deg) scale(0.6);
+                opacity: 0;
+            }
+        }
+
+        /* ── HERO ── */
+        #hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(196, 112, 106, 0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201, 169, 110, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+            letter-spacing: 0.4em;
+            color: var(--gold);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.3s forwards;
+            margin-bottom: 28px;
+        }
+
+        .hero-month {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(5rem, 18vw, 14rem);
+            font-weight: 600;
+            line-height: 1;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(201, 169, 110, 0.5);
+            letter-spacing: -0.02em;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -54%);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: -1;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.1s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.2rem, 6vw, 5.5rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.15;
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeUp 1.2s ease 0.6s forwards;
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .hero-sub {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--blush);
+            opacity: 0;
+            animation: fadeUp 1.2s ease 0.9s forwards;
+            margin-bottom: 48px;
+            letter-spacing: 0.05em;
+        }
+
+        .scroll-hint {
+            opacity: 0;
+            animation: fadeIn 1s ease 2s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .scroll-hint .line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            animation: scrollLine 1.8s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scaleY(0.4);
+                opacity: 0.4;
+            }
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 40px;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .divider-symbol {
+            color: var(--gold);
+            font-size: 1rem;
+        }
+
+        /* ── SECTIONS ── */
+        section {
+            position: relative;
+            z-index: 2;
+            padding: 80px 20px;
+        }
+
+        .section-inner {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.45em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(201, 169, 110, 0.15);
+            border-radius: 2px;
+            padding: 52px 52px;
+            margin-bottom: 40px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .letter-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-block::before {
+            content: '\201C';
+            position: absolute;
+            top: -20px;
+            left: 40px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 8rem;
+            color: var(--gold);
+            opacity: 0.15;
+            line-height: 1;
+        }
+
+        .letter-p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+            line-height: 1.9;
+            color: #e8ddd5;
+            margin-bottom: 28px;
+            font-weight: 300;
+        }
+
+        .letter-p:last-child {
+            margin-bottom: 0;
+        }
+
+        .letter-p em {
+            color: var(--blush);
+            font-style: italic;
+        }
+
+        /* ── HIGHLIGHT CARD ── */
+        .highlight-card {
+            background: linear-gradient(135deg, rgba(196, 112, 106, 0.12), rgba(201, 169, 110, 0.08));
+            border: 1px solid rgba(201, 169, 110, 0.25);
+            border-radius: 2px;
+            padding: 36px 48px;
+            text-align: center;
+            margin: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .highlight-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .highlight-card p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-style: italic;
+            color: var(--cream);
+            line-height: 1.6;
+        }
+
+        .highlight-card span {
+            color: var(--gold);
+        }
+
+        /* ── SIGN OFF ── */
+        .signoff {
+            text-align: right;
+            padding: 20px 0 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+        }
+
+        .signoff.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .signoff p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--blush);
+            font-style: italic;
+        }
+
+        .signoff strong {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--gold);
+            font-weight: 400;
+            margin-top: 6px;
+        }
+
+        /* ── COUNTDOWN ── */
+        #countdown-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(201, 169, 110, 0.1);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+        }
+
+        .countdown-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.45em;
+            color: var(--gold);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .countdown-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .cd-box {
+            text-align: center;
+            min-width: 90px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .cd-box.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cd-box:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .cd-box:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+
+        .cd-box:nth-child(4) {
+            transition-delay: 0.3s;
+        }
+
+        .cd-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            color: var(--cream);
+            display: block;
+            line-height: 1;
+        }
+
+        .cd-unit {
+            font-family: 'Cinzel', serif;
+            font-size: 0.55rem;
+            letter-spacing: 0.35em;
+            color: var(--gold);
+            text-transform: uppercase;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .cd-sep {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: rgba(201, 169, 110, 0.3);
+            align-self: flex-start;
+            padding-top: 8px;
+        }
+
+        /* ── HEART ANIMATION ── */
+        #heart-section {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .heart-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .heart-svg {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 30px rgba(196, 112, 106, 0.6));
+            transition: transform 0.3s ease;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .heart-svg:hover {
+            transform: scale(1.15);
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            14% {
+                transform: scale(1.08);
+            }
+
+            28% {
+                transform: scale(1);
+            }
+
+            42% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-ripple {
+            position: absolute;
+            border: 1px solid rgba(196, 112, 106, 0.4);
+            border-radius: 50%;
+            animation: rippleOut 2s ease-out infinite;
+        }
+
+        .heart-ripple:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .heart-ripple:nth-child(3) {
+            animation-delay: 1.2s;
+        }
+
+        @keyframes rippleOut {
+            0% {
+                width: 120px;
+                height: 120px;
+                opacity: 0.6;
+            }
+
+            100% {
+                width: 240px;
+                height: 240px;
+                opacity: 0;
+            }
+        }
+
+        .heart-caption {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--blush);
+            margin-top: 36px;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+        }
+
+        .heart-caption.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── KNOWN SECTION ── */
+        #known-section {
+            background: rgba(201, 169, 110, 0.04);
+            border-top: 1px solid rgba(201, 169, 110, 0.12);
+            border-bottom: 1px solid rgba(201, 169, 110, 0.12);
+        }
+
+        /* ── INTRO SPLASH ── */
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--wine);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: opacity 1.2s ease, visibility 1.2s ease;
+        }
+
+        #intro.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #intro::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(196, 112, 106, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .intro-tag {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: fadeIn 1.5s ease forwards;
+        }
+
+        .intro-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--cream);
+            line-height: 1.2;
+            margin-bottom: 16px;
+            animation: fadeUp 1.5s ease 0.3s both;
+        }
+
+        .intro-name {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            color: var(--gold);
+            letter-spacing: 0.15em;
+            margin-bottom: 60px;
+            animation: fadeUp 1.5s ease 0.5s both;
+        }
+
+        .intro-hint {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--blush);
+            letter-spacing: 0.1em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .intro-heart {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            animation: heartbeat 2s ease-in-out infinite, fadeIn 1s ease 0.8s both;
+            display: block;
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ── MUSIC BTN ── */
+        #music-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            background: rgba(30, 10, 10, 0.85);
+            border: 1px solid rgba(201, 169, 110, 0.35);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            backdrop-filter: blur(8px);
+        }
+
+        #music-btn:hover {
+            background: var(--gold);
+            color: var(--wine);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-top: 1px solid rgba(201, 169, 110, 0.1);
+        }
+
+        footer p {
+            font-family: 'Cinzel', serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            color: rgba(201, 169, 110, 0.4);
+            text-transform: uppercase;
+        }
+
+        /* ── FLOATING MESSAGE (on heart click) ── */
+        .float-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(30, 10, 10, 0.97);
+            border: 1px solid rgba(201, 169, 110, 0.4);
+            padding: 40px 50px;
+            text-align: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            max-width: 380px;
+            width: 90%;
+            border-radius: 2px;
+        }
+
+        .float-msg.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: all;
+        }
+
+        .float-msg p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--cream);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .float-msg button {
+            background: none;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .float-msg button:hover {
+            background: var(--gold);
+            color: var(--wine);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .letter-block {
+                padding: 36px 28px;
+            }
+
+            .highlight-card {
+                padding: 28px 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BGM -->
+    <audio id="bgm" loop preload="auto">
+        <source src="i_like_me_better.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ── INTRO SPLASH ── -->
+    <div id="intro" onclick="enterSite()">
+        <p class="intro-tag">✦ A Gift For You ✦</p>
+        <h1 class="intro-title">For My Baby,<br />Sania</h1>
+        <p class="intro-name">Happy One Month ♡</p>
+        <span class="intro-heart">♡</span>
+        <p class="intro-hint">tap anywhere to open</p>
+    </div>
+
+    <!-- Music toggle -->
+    <button id="music-btn" onclick="toggleMusic()">♪ Music On</button>
+
+    <!-- Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Float message on heart click -->
+    <div class="float-msg" id="floatMsg">
+        <p>"I love you more than words will ever be enough for, Sania. Tu fully meri hai. ♡"</p>
+        <button onclick="closeMsg()">Close ♡</button>
+    </div>
+
+    <!-- Stars canvas -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- ── HERO ── -->
+    <section id="hero">
+        <div class="hero-month">01</div>
+        <p class="hero-tag">✦ April 2025 — May 2025 ✦</p>
+        <h1 class="hero-title">One Month of<br />Loving You</h1>
+        <p class="hero-sub">Happy Anniversary, My Baby</p>
+        <div class="scroll-hint">
+            <span>Scroll</span>
+            <div class="line"></div>
+        </div>
+    </section>
+
+    <!-- ── LETTER SECTION ── -->
+    <section id="letter">
+        <div class="section-inner">
+
+            <p class="section-label">✦ A Letter From the Heart ✦</p>
+
+            <div class="letter-block">
+                <p class="letter-p">My Dear Baby Sania,</p>
+                <p class="letter-p">It's hard for me to believe that it's already been <em>one month of us again.</em>
+                    One month of loving you openly, one month of having you, one month of feeling like my heart finally
+                    found its peace again after such a long time.</p>
+                <p class="letter-p">And honestly, that peace comes from you.</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>"You have this way of comforting me that <span>nobody else ever could.</span>"</p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">Even on my worst days, your words calm something inside me so naturally. Kabhi kabhi
+                    you don't even realize it, but the smallest things you do — the way you talk to me, the way you
+                    listen, the way you stay — <em>they heal me in ways I can never fully explain.</em></p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">I don't think you truly understand how much I love you. This isn't some temporary
+                    feeling for me. It's not something that changes with mood or time. The love I have for you is
+                    immense, deeper than anything I've ever felt in my life.</p>
+                <p class="letter-p"><em>Tu abb mera hissa bann chuki hai,</em> you're not even an individual person, bas
+                    tera naam Sania hai but tu fully meri hai aur apan ekk haii. ♡</p>
+            </div>
+
+            <div class="highlight-card">
+                <p>"Even after everything, <span>we still chose us.</span> And that's what I love about us!"</p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">And yes, we've had our ups and downs. We've argued, misunderstood each other,
+                    overthought things, and hurt each other at times. But what matters to me is that even after
+                    everything, <em>we still chose us.</em> We still found our way back to each other. And that's what I
+                    love about us!</p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">No relationship is perfect, and ours won't be either. There will be difficult days,
+                    stressful moments, mood swings, distance, and fights. But no matter what comes our way, I want you
+                    to know this — <em>I'm always going to be here for you and us.</em></p>
+                <p class="letter-p">I'm not loving you for a short chapter of my life. I'm loving you for the long run.
+                    For every phase, every version of us, every future moment we haven't even lived yet. <em>I love you
+                        more than anything.</em></p>
+            </div>
+
+            <div class="highlight-card">
+                <p>"When I look at you, I don't see something temporary. <span>I see home.</span> I see my future wife."
+                </p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">And maybe it sounds crazy to some people, but when I look at you, I don't see
+                    something temporary. I see home. I see my future wife. I see the person I want beside me years from
+                    now when life gets real and difficult and beautiful all at once.</p>
+                <p class="letter-p">And honestly? <em>I can't wait for the day we finally get married and look back at
+                        all of this together.</em></p>
+            </div>
+
+            <div class="letter-block">
+                <p class="letter-p">This is our first month together, Again! But it's been so long since I love you —
+                    <em>this is just the start!</em>
+                </p>
+                <p class="letter-p">Thank you for loving me.<br />Thank you for staying.<br /><em>Thank you for being
+                        you.</em></p>
+                <p class="letter-p">Happy one month anniversary, my baby.<br />I love you more than words will ever be
+                    enough for.</p>
+            </div>
+
+            <div class="signoff">
+                <p>Yours,</p>
+                <strong>Avadhut ♡</strong>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── HEART ── -->
+    <section id="heart-section">
+        <div class="heart-container" onclick="openMsg()">
+            <div class="heart-ripple"></div>
+            <div class="heart-ripple"></div>
+            <div class="heart-ripple"></div>
+            <svg class="heart-svg" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M50 85 C50 85 5 55 5 28 C5 14 15 5 27 5 C36 5 44 10 50 18 C56 10 64 5 73 5 C85 5 95 14 95 28 C95 55 50 85 50 85Z"
+                    fill="url(#heartGrad)" />
+                <defs>
+                    <linearGradient id="heartGrad" x1="5" y1="5" x2="95" y2="85" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#e8847e" />
+                        <stop offset="100%" stop-color="#7a3636" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <p class="heart-caption">Tap the heart for a surprise ♡</p>
+    </section>
+
+    <!-- ── COUNTDOWN 1: Anniversary ── -->
+    <section id="countdown-section">
+        <div class="section-inner" style="text-align:center;">
+            <p class="countdown-label">✦ Together Since · 21st April 2026 ✦</p>
+            <div class="countdown-grid">
+                <div class="cd-box">
+                    <span class="cd-num" id="cd-days">00</span>
+                    <span class="cd-unit">Days</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="cd-hours">00</span>
+                    <span class="cd-unit">Hours</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="cd-mins">00</span>
+                    <span class="cd-unit">Minutes</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="cd-secs">00</span>
+                    <span class="cd-unit">Seconds</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── COUNTDOWN 2: Known each other ── -->
+    <section id="known-section">
+        <div class="section-inner" style="text-align:center;">
+            <p class="countdown-label">✦ Originally Dating Since · 23rd October 2023 ✦</p>
+            <p
+                style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--blush);margin-bottom:40px;letter-spacing:0.04em;">
+                Before love, there was a connection that started it all</p>
+            <div class="countdown-grid" style="flex-wrap:wrap;gap:12px;">
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-years" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Years</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-months" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Months</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-days" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Days</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-hours" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Hours</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-mins" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Mins</span>
+                </div>
+                <div class="cd-sep">:</div>
+                <div class="cd-box">
+                    <span class="cd-num" id="kn-secs" style="color:var(--gold);">00</span>
+                    <span class="cd-unit">Secs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+        <p>Made with love ♡ — One month & counting</p>
+    </footer>
+
+    <script>
+        // ── INTRO + BGM ──
+        const audio = document.getElementById('bgm');
+        const musicBtn = document.getElementById('music-btn');
+
+        function enterSite() {
+            document.getElementById('intro').classList.add('hide');
+            audio.volume = 0.5;
+            audio.play().catch(() => { });
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.textContent = '♪ Music On';
+            } else {
+                audio.pause();
+                musicBtn.textContent = '♪ Music Off';
+            }
+        }
+
+        // ── CURSOR ──
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.addEventListener('mousedown', () => cursor.classList.add('clicked'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('clicked'));
+
+        // ── STARS ──
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 180; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.2 + 0.2,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.005 + 0.002,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+        initStars();
+
+        function drawStars(ts) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                s.alpha = 0.2 + 0.7 * Math.abs(Math.sin(ts * s.speed + s.phase));
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(240, 217, 176, ${s.alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        requestAnimationFrame(drawStars);
+
+        // ── PETALS ──
+        const petalColors = ['#e8c4b2', '#c4706a', '#f0d9b0', '#d4927a'];
+        const petalShapes = [
+            'M0,-10 C5,-10 10,-5 10,0 C10,7 5,12 0,10 C-5,12 -10,7 -10,0 C-10,-5 -5,-10 0,-10Z',
+            'M0,-12 C3,-8 8,-4 6,2 C4,8 0,10 0,10 C0,10 -4,8 -6,2 C-8,-4 -3,-8 0,-12Z'
+        ];
+
+        for (let i = 0; i < 18; i++) {
+            const div = document.createElement('div');
+            div.className = 'petal';
+            const size = Math.random() * 14 + 8;
+            const color = petalColors[Math.floor(Math.random() * petalColors.length)];
+            const shape = petalShapes[Math.floor(Math.random() * petalShapes.length)];
+            const svg = `<svg width="${size}" height="${size}" viewBox="-12 -12 24 24"><path d="${shape}" fill="${color}" opacity="0.7"/></svg>`;
+            div.innerHTML = svg;
+            div.style.left = Math.random() * 100 + 'vw';
+            div.style.top = '-60px';
+            div.style.animationDuration = (Math.random() * 8 + 8) + 's';
+            div.style.animationDelay = (Math.random() * 12) + 's';
+            document.body.appendChild(div);
+        }
+
+        // ── SCROLL REVEAL ──
+        const revealEls = document.querySelectorAll(
+            '.section-label, .letter-block, .highlight-card, .signoff, .cd-box, .countdown-label, .heart-caption'
+        );
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealEls.forEach(el => observer.observe(el));
+
+        // ── COUNTDOWN 1: Anniversary (April 21, 2026) ──
+        const startDate = new Date('2026-04-21T00:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = now - startDate;
+            if (diff < 0) return;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+            document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+            document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        }
+        updateCountdown();
+
+        // ── COUNTDOWN 2: Known each other (October 23, 2020) ──
+        const knownDate = new Date('2023-10-23T00:00:00');
+
+        function updateKnownTimer() {
+            const now = new Date();
+            const diff = now - knownDate;
+            if (diff < 0) return;
+
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const years = Math.floor(totalDays / 365);
+            const months = Math.floor((totalDays % 365) / 30);
+            const days = Math.floor((totalDays % 365) % 30);
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('kn-years').textContent = String(years).padStart(2, '0');
+            document.getElementById('kn-months').textContent = String(months).padStart(2, '0');
+            document.getElementById('kn-days').textContent = String(days).padStart(2, '0');
+            document.getElementById('kn-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('kn-mins').textContent = String(mins).padStart(2, '0');
+            document.getElementById('kn-secs').textContent = String(secs).padStart(2, '0');
+        }
+        updateKnownTimer();
+
+        setInterval(() => { updateCountdown(); updateKnownTimer(); }, 1000);
+
+        // ── HEART MODAL ──
+        function openMsg() {
+            document.getElementById('floatMsg').classList.add('show');
+            document.getElementById('overlay').classList.add('show');
+        }
+        function closeMsg() {
+            document.getElementById('floatMsg').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+        document.getElementById('overlay').addEventListener('click', closeMsg);
+    </script>
+</body>
+
+</html>
